@@ -34,5 +34,21 @@ SELECT EXTRACT(YEAR FROM CURRENT_DATE) as year,
 SELECT title, price, author_name FROM book
 WHERE price > (SELECT AVG(price) FROM book);
 
+SELECT name FROM publishers WHERE id IN(
+    SELECT publisher_id FROM book GROUP BY publisher_id HAVING COUNT(*) > 0
+);
+
+
+SELECT * FROM book JOIN publishers ON book.publisher_id = publisher_id WHERE name ILIKE '%the%'
+
+-- view creating 
+CREATE VIEW available_books
+AS
+SELECT * FROM book WHERE in_stock = true;
+
+SELECT * FROM available_books;
+
+DROP View available_books;
+
 SELECT * FROM book;
 SELECT * FROM publishers;
