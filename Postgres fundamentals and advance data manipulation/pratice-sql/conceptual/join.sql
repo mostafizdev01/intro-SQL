@@ -47,8 +47,25 @@ AS
 SELECT * FROM book WHERE in_stock = true;
 
 SELECT * FROM available_books;
-
 DROP View available_books;
+
+--- Function Queris
+
+CREATE or REPLACE FUNCTION apply_discount(price NUMERIC, discount_parcent NUMERIC)
+RETURNS NUMERIC AS $$
+BEGIN
+RETURN price - (price*discount_parcent/100);
+END;
+$$ LANGUAGE PLPGSQL;
+
+DROP Function apply_discount();
+
+-- call the function
+SELECT title, price, apply_discount(price, 10) AS discounted_price FROM book;
+
+--- index
+
+CREATE INDEX idx_books_title ON book(title);
 
 SELECT * FROM book;
 SELECT * FROM publishers;
